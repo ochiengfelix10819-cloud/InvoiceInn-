@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#172b4d">
+  <meta name="description" content="InvoiceInn — create professional invoices for your business.">
+  <title>InvoiceInn | Invoice Generator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark">I</span><span>InvoiceInn</span></a>
+      <div class="workspace-label">WORKSPACE</div>
+      <nav>
+        <a class="nav-link active" href="#dashboard"><span>▦</span> Dashboard</a>
+        <a class="nav-link" href="#editor"><span>＋</span> Create invoice</a>
+        <a class="nav-link" href="#recent"><span>▤</span> Invoices</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card">
+          <div class="help-icon">?</div>
+          <strong>Need a hand?</strong>
+          <p>Your invoice workspace is ready. Create your first invoice to get started.</p>
+        </div>
+        <div class="profile">
+          <div class="avatar">II</div>
+          <div><strong>My business</strong><small>Free workspace</small></div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">MONDAY, YOUR BUSINESS STARTS HERE</div>
+          <h1>Good day 👋</h1>
+          <p class="muted">Here’s what’s happening with your invoices.</p>
+        </div>
+        <button class="primary-btn" id="topCreate">＋ Create invoice</button>
+      </header>
+
+      <section class="stats-grid" aria-label="Invoice summary">
+        <article class="stat-card">
+          <div class="stat-top"><span>Total invoices</span><span class="stat-icon blue">▤</span></div>
+          <strong id="totalCount">0</strong><small>Invoices created</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Total invoiced</span><span class="stat-icon purple">KSh</span></div>
+          <strong id="totalAmount">KSh 0.00</strong><small>Across saved invoices</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Paid</span><span class="stat-icon green">✓</span></div>
+          <strong id="paidCount">0</strong><small>Marked as paid</small>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Pending</span><span class="stat-icon orange">◷</span></div>
+          <strong id="pendingCount">0</strong><small>Awaiting payment</small>
+        </article>
+      </section>
+
+      <section class="content-panel" id="editor">
+        <div class="panel-heading">
+          <div><div class="eyebrow">INVOICE WORKSPACE</div><h2>Create a professional invoice</h2><p class="muted">Fill in the details and preview your invoice instantly.</p></div>
+          <span class="draft-pill">● Draft editor</span>
+        </div>
+        <div class="editor-layout">
+          <form id="invoiceForm" class="invoice-form">
+            <div class="form-section">
+              <h3>Business details</h3>
+              <div class="field-grid">
+                <label>Business name<input id="businessName" placeholder="e.g. Acme Solutions" required></label>
+                <label>Business email<input id="businessEmail" type="email" placeholder="hello@business.co.ke"></label>
+                <label>Business phone<input id="businessPhone" placeholder="+254 7XX XXX XXX"></label>
+                <label>Business address<input id="businessAddress" placeholder="Nairobi, Kenya"></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Customer details</h3>
+              <div class="field-grid">
+                <label>Customer name<input id="customerName" placeholder="Customer or company name" required></label>
+                <label>Customer email<input id="customerEmail" type="email" placeholder="customer@example.com"></label>
+                <label class="full">Billing address<input id="customerAddress" placeholder="Customer address"></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <h3>Invoice information</h3>
+              <div class="field-grid">
+                <label>Invoice number<input id="invoiceNumber" required></label>
+                <label>Currency<select id="currency"><option value="KES">KES — Kenyan Shilling</option><option value="USD">USD — US Dollar</option><option value="EUR">EUR — Euro</option><option value="GBP">GBP — Pound Sterling</option></select></label>
+                <label>Issue date<input id="issueDate" type="date" required></label>
+                <label>Due date<input id="dueDate" type="date" required></label>
+              </div>
+            </div>
+            <div class="form-section">
+              <div class="items-heading"><h3>Items and services</h3><button type="button" class="text-btn" id="addItem">＋ Add item</button></div>
+              <div class="item-head"><span>Description</span><span>Qty</span><span>Rate</span><span>Total</span><span></span></div>
+              <div id="itemsList"></div>
+            </div>
+            <div class="form-section">
+              <div class="field-grid">
+                <label>Tax (%)<input id="taxRate" type="number" min="0" max="100" step="0.01" value="0"></label>
+                <label>Discount (amount)<input id="discount" type="number" min="0" step="0.01" value="0"></label>
+                <label class="full">Notes<textarea id="notes" rows="3" placeholder="Thank you for your business."></textarea></label>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button type="button" class="secondary-btn" id="resetForm">Clear form</button>
+              <button type="submit" class="primary-btn">Save invoice</button>
+            </div>
+          </form>
+
+          <aside class="preview-wrap">
+            <div class="preview-toolbar"><strong>Live preview</strong><span class="live-dot">● Live</span></div>
+            <div class="invoice-paper" id="invoicePreview">
+              <div class="paper-top"><div><div class="paper-brand" id="pBusiness">Your Business</div><div class="paper-muted" id="pBusinessInfo">Business address and contact</div></div><div class="invoice-label">INVOICE</div></div>
+              <div class="paper-rule"></div>
+              <div class="paper-parties"><div><small>BILL TO</small><strong id="pCustomer">Customer name</strong><span id="pCustomerInfo">Customer address</span></div><div class="paper-meta"><span>Invoice no. <b id="pNumber">INV-001</b></span><span>Issued <b id="pIssue">—</b></span><span>Due <b id="pDue">—</b></span></div></div>
+              <table class="preview-table"><thead><tr><th>Description</th><th>Qty</th><th>Rate</th><th>Total</th></tr></thead><tbody id="previewItems"><tr><td>Service or product</td><td>1</td><td>0.00</td><td>0.00</td></tr></tbody></table>
+              <div class="totals"><div><span>Subtotal</span><b id="pSubtotal">KES 0.00</b></div><div><span>Tax</span><b id="pTax">KES 0.00</b></div><div><span>Discount</span><b id="pDiscount">KES 0.00</b></div><div class="grand-total"><span>Total due</span><b id="pTotal">KES 0.00</b></div></div>
+              <div class="paper-notes"><strong>Notes</strong><p id="pNotes">Thank you for your business.</p></div>
+              <div class="paper-footer">Thank you for choosing us.</div>
+            </div>
+            <button type="button" class="secondary-btn print-btn" id="printInvoice">Print / Save as PDF</button>
+          </aside>
+        </div>
+      </section>
+
+      <section class="content-panel recent-panel" id="recent">
+        <div class="panel-heading"><div><div class="eyebrow">YOUR RECORDS</div><h2>Recent invoices</h2><p class="muted">Invoices saved on this device.</p></div></div>
+        <div class="table-scroll"><table class="recent-table"><thead><tr><th>Invoice</th><th>Customer</th><th>Date</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead><tbody id="recentInvoices"><tr><td colspan="6" class="empty-state">No invoices yet. Create your first invoice above.</td></tr></tbody></table></div>
+      </section>
+      <footer>© <span id="year"></span> InvoiceInn. Built for businesses in Kenya.</footer>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
